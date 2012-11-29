@@ -1,8 +1,5 @@
 (ns cmd_parser.core)
 
-;(defn parse [input] 
-;	cond())
-	
 (defn create_structured_message [command_id, message]
 	(if(and (>= command_id 0) (<= command_id 255))
 	(apply str [command_id,","" "message ";"])"The number needs to be within range of 0 - 255."))
