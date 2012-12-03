@@ -1,19 +1,48 @@
-(ns cmd_parser.core)
+(ns cmd_parser.core
+	(:use [clojure.string]))
 
-(defn create_structured_message [command_id, message]
-	(if(and (>= command_id 0) (<= command_id 255))
-	(apply str [command_id,","" "message ";"])"The number needs to be within range of 0 - 255."))
+(defn decode-structured-message [structured_message]
+	)
+	
+	
+	(let [stripped-message (replace structured_message #";" "") ]
+	
+;		(let [id (read-string (first(split stripped-message #", "))) message (first (rest (split stripped-message #", ")))]
+;			(cond
+;				(not(integer? id))(throw (Exception. "The command id needs to be a number."))
+;				(or(< id 0) (> id 255))(throw (Exception. "The number needs to be within range of 0 - 255."))
+;				(and(>= id 0) (<= id 255)) (vector id message)))))
 
-(defn decode_structured_message [structured_message]
-	(if(and (>= (re-find #"\d+" structured_message) 0) (<= (re-find #"\d+" structured_message) 255))
-	(list (re-find #"\d+" structured_message))))
-	;then test message part does not have , or ; if it does not,
-	;then conj it onto the list
-	
-	
-	;find a way to create_st_message when passed multiples(()()())
-	;and to decode when passed multiples
-	
+(defn decode-structured-messages [messages]
+	messages)
+
+(defn create-structured-message [command_id, message]
+		(cond 
+			(string? command_id)(throw (Exception. "The command id needs to be a number."))
+			(or(< command_id 0) (> command_id 255))(throw (Exception. "The number needs to be within range of 0 - 255."))
+			(integer? message)(throw (Exception. "The message needs to be a string."))
+			(and(and (>= command_id 0) (<= command_id 255)) (string? message))(apply str [command_id,","" "message ";"])))
+
+(defn create-structured-messages [info]
+	(let [data (first info)]
+		(cond
+			(string? (first data))(throw (Exception. "The command id needs to be a number."))
+			(or(< (first data) 0) (> (first data) 255))(throw (Exception. "The number needs to be within range of 0 - 255."))
+			(integer? (first(rest data)))(throw (Exception. "The message needs to be a string."))
+			(and (>= (first data) 0) (<= (first data) 255)) (apply str[(first data),", ", (first(rest data)), ";"]))))
+
+
+	;then call itself or use a loop recur, or just lazy seq but what bout breaking out when exceptions are thrown?
+
+	;	(create_structured_messages (rest(list))
+	;	)
+	;			(if(and (>= command_id 0) (<= command_id 255))
+	;		:find a way to(add result to a list (apply str [command_id,","" "message ";"])(throw (Exception. "The number needs to be within range of 0 - 255."))))))
+			;pass the rest of the list to create_structured_messages
+	;	)
+
+	;then conj it onto the list similar to prime factors or fibb numbers. 
+	;you can do the first and then the rest.
 	
 	
 	;then base 64 encoding?
