@@ -10,16 +10,7 @@
 				(and(>= id 0) (<= id 255)) (list id message)))))
 
 (defn decode-structured-messages [input]
-	(first(list input)))
-	;turning the input to a list makes the whole thing a one element list
-	;first calls the whole thing
-	;need to break up the elements before I can manipulate them.
-	
-	
-	;		(cond
-	;			(not(integer? id))(throw (Exception. "The command id needs to be a number."))
-	;			(or(< id 0) (> id 255))(throw (Exception. "The number needs to be within range of 0 - 255."))
-	;			(and(>= id 0) (<= id 255)) (list id message)))))
+	(map decode-structured-message (split input #";")))
 
 (defn create-structured-message [command_id, message]
 		(cond 

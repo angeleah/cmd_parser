@@ -4,8 +4,7 @@
 (describe "decoding structured message"
 	
 	(it "should return a list with an id and a message when passed a string"
-		(should= '(5, "cool")
-		 (decode-structured-message "5, cool;")))
+		(should= '(5, "cool")(decode-structured-message "5, cool;")))
 
 	(it	"should return 'The number needs to be within range of 0 - 255.' if the number is out of range."
 		(should-throw Exception "The number needs to be within range of 0 - 255." (decode-structured-message "478, cool;")))
@@ -14,16 +13,16 @@
 		(should-throw Exception "The command id needs to be a number." (decode-structured-message "a, super cool time;")))
 )
 
-(describe "decoding structured messages"
+(describe "decoding multiple structured messages"
 
-;	(it "should return a list with two element lists that contain an id and a message when it receives a string"
-;		(should= '((5 "cool")(7, "sweet")(12, "what")(14, "OMG")) (decode-structured-messages "5, cool; 7, sweet; 12, what; 14, OMG;")))
+	(it "should return a list with two element lists that contain an id and a message when it receives a string"
+		(should= '((5, "cool")(7, "sweet")(12, "what")(14, "OMG")) (decode-structured-messages "5, cool; 7, sweet; 12, what; 14, OMG;")))
 
-;	(it	"should return 'The number needs to be within range of 0 - 255.' if the number is out of range."
-;		(should-throw Exception "The number needs to be within range of 0 - 255." (decode-structured-messages "478, cool;")))
-;
-;	(it "should throw an exception when passed something that is NAN as the command id."
-;		(should-throw Exception "The command id needs to be a number." (decode-structured-messages "a, super cool time;")))
+	(it	"should return 'The number needs to be within range of 0 - 255.' if the number is out of range."
+		(should-throw Exception (first (decode-structured-messages "478, cool;"))))
+
+	(it "should throw an exception when passed something that is NAN as the command id."
+		(should-throw Exception (first (decode-structured-messages "a, super cool time;"))))
 )
 
 (describe "creating a single structured message"
