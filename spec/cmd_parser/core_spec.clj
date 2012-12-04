@@ -19,10 +19,10 @@
 		(should= '((5, "cool")(7, "sweet")(12, "what")(14, "OMG")) (decode-structured-messages "5, cool; 7, sweet; 12, what; 14, OMG;")))
 
 	(it	"should return 'The number needs to be within range of 0 - 255.' if the number is out of range."
-		(should-throw Exception (first (decode-structured-messages "478, cool;"))))
+		(should-throw Exception (decode-structured-messages "478, cool;")))
 
 	(it "should throw an exception when passed something that is NAN as the command id."
-		(should-throw Exception (first (decode-structured-messages "a, super cool time;"))))
+		(should-throw Exception (decode-structured-messages "a, super cool time;")))
 )
 
 (describe "creating a single structured message"

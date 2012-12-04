@@ -10,7 +10,8 @@
 				(and(>= id 0) (<= id 255)) (list id message)))))
 
 (defn decode-structured-messages [input]
-	(map decode-structured-message (split input #";")))
+	(let [result (map decode-structured-message (split input #";"))]
+		(take (count result) result)))
 
 (defn create-structured-message [command_id, message]
 		(cond 
