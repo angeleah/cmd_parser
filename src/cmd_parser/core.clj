@@ -1,5 +1,7 @@
 (ns cmd_parser.core
-	(:use [clojure.string]))
+	(:use [clojure.string]
+		  [clojure.data.codec.base64 :as b64]
+		  [clojure.java.io :as io]))
 
 (defn decode-structured-message [structured_message]
 	(let [stripped-message (replace structured_message #";" "") ]
@@ -26,4 +28,14 @@
 (defn create-structured-messages [info]
 	 (join " "(map create-structured-message-from-pair info)))
 	
-	;then base 64 encoding?
+(defn base-64 [message]
+	 (String. (encode (.getBytes message))))
+	;http://clojure-log.n01se.net/date/2012-10-09.html
+	
+(defn decode-base-64 [message]
+	 (String. (decode (.getBytes message))))
+	
+;have the create structured message function - it will take id, message and encoding(which will be a funtion)
+;then I will have two functions - b64 which will take a message and encode it.  and another none which will take a 
+;message and just return it.
+;then I can call create structured message and pass it either none or b64

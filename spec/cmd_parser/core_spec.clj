@@ -58,4 +58,13 @@
 		(should= "5, cool; 7, sweet; 12, what?; 14, OMG;" (create-structured-messages '((5, "cool")(7, "sweet")(12, "what?")(14, "OMG")))))
 )
 
+(describe "create and decode base 64 encoded messages"
+
+	(it "should base 64 encode a message"
+		(should= "aGVsbG8=" (base-64 "hello")))
+
+	(it "should decode a message"
+		(should= "hello" (decode-base-64 "aGVsbG8=")))
+)
+
 
