@@ -35,6 +35,9 @@
 (defn decode-base-64 [message]
 	 (String. (decode (.getBytes message))))
 	
+(defn no-encoding [message]
+	message)
+	
 ;have the create structured message function - it will take id, message and encoding(which will be a funtion)
 ;then I will have two functions - b64 which will take a message and encode it.  and another none which will take a 
 ;message and just return it.

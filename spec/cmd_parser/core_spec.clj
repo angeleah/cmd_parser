@@ -65,6 +65,9 @@
 
 	(it "should decode a message"
 		(should= "hello" (decode-base-64 "aGVsbG8=")))
+		
+	( it "should return a message that was passed in"
+		(should= "hello" (no-encoding "hello")))
 )
 
 
