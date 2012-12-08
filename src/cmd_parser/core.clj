@@ -7,7 +7,6 @@
 
 (defn base-64 [message]
 	 (String. (b64/encode (.getBytes message))))
-	;http://clojure-log.n01se.net/date/2012-10-09.html
 
 (defn no-encoding [message]
 	message)
@@ -34,17 +33,16 @@
 	(let [result (map decode-structured-message (split input #";"))]
 		(doall result))))
 
-		(defn decode-structured-messages [input decoder]
-			(let [result (map (fn [structured-message] (decode-structured-message structured-message decoder )) (split input #";"))]
-				(doall result)))
+(defn decode-structured-messages [input decoder]
+	(let [result (map (fn [structured-message] (decode-structured-message structured-message decoder )) (split input #";"))]
+		(doall result)))
 
 (defn create-structured-message [command_id message encoding]
-(prn command_id message encoding)
-		(cond 
-			(string? command_id)(throw (Exception. "The command id needs to be a number."))
-			(or(< command_id 0) (> command_id 255))(throw (Exception. "The number needs to be within range of 0 - 255."))
-			(integer? message)(throw (Exception. "The message needs to be a string."))
-			(and(and (>= command_id 0) (<= command_id 255)) (string? message))(apply str [command_id,", " (encoding message) ";"])))
+	(cond 
+		(string? command_id)(throw (Exception. "The command id needs to be a number."))
+		(or(< command_id 0) (> command_id 255))(throw (Exception. "The number needs to be within range of 0 - 255."))
+		(integer? message)(throw (Exception. "The message needs to be a string."))
+		(and(and (>= command_id 0) (<= command_id 255)) (string? message))(apply str [command_id,", " (encoding message) ";"])))
 
 (defn create-structured-message-from-list [element]
 	(create-structured-message (first element) (first(rest element)) (last element)))

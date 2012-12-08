@@ -4,7 +4,7 @@
 (describe "decoding structured message"
 
 	(it "should return a list with an id and a message when passed a string"
-		(should= '(5 "cool") (decode-structured-message "5, cool;" plain-text)))
+		(should= '(5 "cool") (decode-structured-message "5, cool;")))
 
 	(it	"should return 'The number needs to be within range of 0 - 255.' if the number is out of range."
 		(should-throw Exception "The number needs to be within range of 0 - 255." (decode-structured-message "478, cool;" plain-text)))
