@@ -18,9 +18,9 @@
 	 (String. (b64/decode (.getBytes message))))
 
 (defn decode-structured-message
-	([structured_message] (decode-structured-message structured_message plain-text))
-	([structured_message decoder]
-	(let [stripped-message (str/replace structured_message #";" "") ]
+	([structured-message] (decode-structured-message structured-message plain-text))
+	([structured-message decoder]
+	(let [stripped-message (str/replace structured-message #";" "") ]
 		(let [id (read-string (first(split stripped-message #", "))) message (first (rest (split stripped-message #", ")))]
 			(cond
 				(not(integer? id))(throw (Exception. "The command id needs to be a number."))
@@ -37,12 +37,12 @@
 	(let [result (map (fn [structured-message] (decode-structured-message structured-message decoder )) (split input #";"))]
 		(doall result)))
 
-(defn create-structured-message [command_id message encoding]
+(defn create-structured-message [command-id message encoding]
 	(cond 
-		(string? command_id)(throw (Exception. "The command id needs to be a number."))
-		(or(< command_id 0) (> command_id 255))(throw (Exception. "The number needs to be within range of 0 - 255."))
+		(string? command-id)(throw (Exception. "The command id needs to be a number."))
+		(or(< command-id 0) (> command-id 255))(throw (Exception. "The number needs to be within range of 0 - 255."))
 		(integer? message)(throw (Exception. "The message needs to be a string."))
-		(and(and (>= command_id 0) (<= command_id 255)) (string? message))(apply str [command_id,", " (encoding message) ";"])))
+		(and(and (>= command-id 0) (<= command-id 255)) (string? message))(apply str [command-id,", " (encoding message) ";"])))
 
 (defn create-structured-message-from-list [element]
 	(create-structured-message (first element) (first(rest element)) (last element)))
