@@ -30,19 +30,17 @@
 (defn decode-structured-messages
 	([input] (decode-structured-message input plain-text))
 	([input decoder]
-	(let [result (map decode-structured-message (split input #";"))]
+	(let [result (map (fn [structured-message] (decode-structured-message structured-message decoder )) (split input #";"))]
 		(doall result))))
 
-(defn decode-structured-messages [input decoder]
-	(let [result (map (fn [structured-message] (decode-structured-message structured-message decoder )) (split input #";"))]
-		(doall result)))
-
-(defn create-structured-message [command-id message encoding]
+(defn create-structured-message
+	([command-id message] (create-structured-message command-id message no-encoding))
+	([command-id message encoding]
 	(cond 
 		(string? command-id)(throw (Exception. "The command id needs to be a number."))
 		(or(< command-id 0) (> command-id 255))(throw (Exception. "The number needs to be within range of 0 - 255."))
 		(integer? message)(throw (Exception. "The message needs to be a string."))
-		(and(and (>= command-id 0) (<= command-id 255)) (string? message))(apply str [command-id,", " (encoding message) ";"])))
+		(and(and (>= command-id 0) (<= command-id 255)) (string? message))(apply str [command-id,", " (encoding message) ";"]))))
 
 (defn create-structured-message-from-list [element]
 	(create-structured-message (first element) (first(rest element)) (last element)))
