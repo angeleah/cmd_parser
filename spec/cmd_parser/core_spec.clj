@@ -1,5 +1,6 @@
 (ns cmd_parser.core-spec
-  (:use [speclj.core] [cmd_parser.core]))
+  (:require [speclj.core :refer :all]
+            [cmd_parser.core :refer :all]))
 
 (describe "decoding structured message"
 
@@ -38,13 +39,13 @@
 
 	(it "should throw an exception when passed a number out of the range of 0 - 255."
 		(should-throw Exception "The number needs to be within range of 0 - 255." (create-structured-message 387 "cool" no-encoding)))
-		
+
 	(it "should throw an exception when passed something that is NAN as the command id."
 		(should-throw Exception "The command id needs to be a number." (create-structured-message "a" "cool" no-encoding)))
-		
+
 	(it "should throw an exception if the message is not a string."
 		(should-throw Exception "The message needs to be a string." (create-structured-message 12 16 no-encoding)))
-		
+
 	(it "should be able to create a base 64 encoded message"
 		(should= "5, aGVsbCB5ZWFoIHRoaXMgaXMgYmFzZSA2NCBlbmNvZGVk;" (create-structured-message 5 "hell yeah this is base 64 encoded" base-64)))
 )
@@ -67,7 +68,7 @@
 		(should= "5, cool; 7, sweet; 12, what?; 14, OMG;" (create-structured-messages [[5 "cool" no-encoding][7 "sweet" no-encoding][12 "what?" no-encoding][14 "OMG"no-encoding]])))
 
 	(it "should be able to create a string of multiple structured messages when passed a list of two element lists that are formatted with mixed encoding"
-		(should= "5, Y29vbA==; 7, sweet; 12, d2hhdD8=; 14, OMG;" (create-structured-messages [[5 "cool" base-64][7 "sweet" no-encoding][12 "what?" base-64][14 "OMG"no-encoding]])))	
+		(should= "5, Y29vbA==; 7, sweet; 12, d2hhdD8=; 14, OMG;" (create-structured-messages [[5 "cool" base-64][7 "sweet" no-encoding][12 "what?" base-64][14 "OMG"no-encoding]])))
 )
 
 (describe "create and decode base 64 encoded messages"

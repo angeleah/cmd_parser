@@ -1,9 +1,9 @@
 (ns cmd_parser.core
-	(:use
-		[clojure.string :as str :only [split join]])
-	(:require
-		[clojure.data.codec.base64 :as b64 ]
-		[clojure.java.io :as io]))
+  (:use
+    [clojure.string :as str :only [split join]])
+  (:require
+    [clojure.data.codec.base64 :as b64 ]
+    [clojure.java.io :as io]))
 
 (defn base-64 [message]
 	 (String. (b64/encode (.getBytes message))))
@@ -36,7 +36,7 @@
 (defn create-structured-message
 	([command-id message] (create-structured-message command-id message no-encoding))
 	([command-id message encoding]
-	(cond 
+	(cond
 		(string? command-id)(throw (Exception. "The command id needs to be a number."))
 		(or(< command-id 0) (> command-id 255))(throw (Exception. "The number needs to be within range of 0 - 255."))
 		(integer? message)(throw (Exception. "The message needs to be a string."))
